@@ -1,13 +1,11 @@
-package com.bankingsystem.AccountMs;
+package com.bankingsystem.transactionms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AccountMsApplication {
-
+public class TransactionMsApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(AccountMsApplication.class, args);
+		SpringApplication.run(TransactionMsApplication.class, args);
 	}
-
 }

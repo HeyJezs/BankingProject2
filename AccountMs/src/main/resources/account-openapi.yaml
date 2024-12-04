@@ -1,0 +1,158 @@
+openapi: 3.0.0
+info:
+  title: Account Microservice API
+  version: 1.0.0
+  description: API para la gestión de cuentas bancarias.
+servers:
+  - url: http://localhost:8081
+    description: Local server
+paths:
+  /cuentas:
+    get:
+      summary: Listar todas las cuentas bancarias
+      operationId: getAllBankAccounts
+      responses:
+        '200':
+          description: Lista de cuentas obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccount'
+    post:
+      summary: Crear una nueva cuenta bancaria
+      operationId: createBankAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankAccount'
+      responses:
+        '201':
+          description: Cuenta creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+  /cuentas/{id}:
+    get:
+      summary: Obtener detalles de una cuenta por ID
+      operationId: getBankAccountById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles de la cuenta obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+    put:
+      summary: Actualizar detalles de una cuenta bancaria
+      operationId: updateBankAccount
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankAccount'
+      responses:
+        '200':
+          description: Cuenta actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+    delete:
+      summary: Eliminar una cuenta bancaria
+      operationId: deleteBankAccount
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cuenta eliminada exitosamente
+  /cuentas/{cuentaId}/depositar:
+    put:
+      summary: Realizar un depósito en una cuenta
+      operationId: depositar
+      parameters:
+        - name: cuentaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                monto:
+                  type: number
+                  format: double
+      responses:
+        '200':
+          description: Depósito realizado exitosamente
+  /cuentas/{cuentaId}/retirar:
+    put:
+      summary: Realizar un retiro en una cuenta
+      operationId: retirar
+      parameters:
+        - name: cuentaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                monto:
+                  type: number
+                  format: double
+      responses:
+        '200':
+          description: Retiro realizado exitosamente
+components:
+  schemas:
+    BankAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+        numeroCuenta:
+          type: string
+        tipoCuenta:
+          type: string
+          enum:
+            - AHORROS
+            - CORRIENTE
+        saldo:
+          type: number
+          format: double
+        clienteId:
+          type: integer
+      required:
+        - numeroCuenta
+        - tipoCuenta
+        - clienteId

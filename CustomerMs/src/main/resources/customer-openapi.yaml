@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: Customer Microservice API
+  version: 1.0.0
+  description: API para la gestión de clientes.
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /clientes:
+    get:
+      summary: Listar todos los clientes
+      operationId: getAllCustomers
+      responses:
+        '200':
+          description: Lista de clientes obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Crear un cliente nuevo
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Cliente creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+  /clientes/{id}:
+    get:
+      summary: Obtener detalles de un cliente
+      operationId: getCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles del cliente obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        apellido:
+          type: string
+        dni:
+          type: string
+        email:
+          type: string
+      required:
+        - nombre
+        - apellido
+        - dni
